@@ -313,7 +313,13 @@ function yoloDataRendering() {
 function download(data, filename, type, encoding) {
     encoding || (encoding = "utf-8")
     var blobData = new Blob([data], {type: type + ";charset="+encoding})
-    saveAs(blobData, filename);
+    let formData = new FormData();
+    formData.append('file', blobData)
+    fetch("https://localhost:3000/uploadAnnotation", {
+        method: 'PUT',
+        body: formData,
+    })
+    // saveAs(blobData, filename);
 }
 
 /**

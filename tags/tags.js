@@ -119,6 +119,8 @@ riot.tag2('images-slider', '<div class="float-left" style="width: 50px; height: 
         tag.loadIntoWorkArea = loadIntoWorkArea;
 
         function readImageFiles(e) {
+            console.debug("fileS jonguh")
+            console.debug(e)
             var input = e.srcElement;
             if (input.files && input.files[0]) {
                 for(i=0;i<input.files.length;i++){
@@ -129,6 +131,8 @@ riot.tag2('images-slider', '<div class="float-left" style="width: 50px; height: 
         this.thumbnails = [];
         this.thumbnailWidth= this.opts.thumbnail_width || "80px"
         function readImageFile(f) {
+            console.debug("file jonguh")
+            console.debug(f)
             if(f.type.startsWith("image")){
                 var reader = new FileReader();
                 reader.onload = e => {

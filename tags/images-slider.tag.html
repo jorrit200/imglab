@@ -5,10 +5,15 @@
         }
     </style>
     <div style="width: 50px;  text-align: center; padding: 10px;">
+<!--        <label class="btn-bs-file">-->
+<!--            <i class="icon-picture" style="font-size: 1.5em"></i>-->
+<!--            <input id="browseImages" type="file" class="filebutton" accept="image/*" onchange={ readImageFiles }-->
+<!--                multiple />-->
+<!--        </label>-->
+
         <label class="btn-bs-file">
             <i class="icon-picture" style="font-size: 1.5em"></i>
-            <input id="browseImages" type="file" class="filebutton" accept="image/*" onchange={ readImageFiles }
-                multiple />
+            <input id="img_from_server" type="button" class="filebutton" onclick={ getServerImage }/>
         </label>
 
         <label class="btn-bs-file">
@@ -40,6 +45,7 @@
 
     <script>
         var tag = this;
+        tag.getServerImage = getServerImage;
         tag.readImageFiles = readImageFiles;
         tag.readImageFile = readImageFile;
         tag.slideleft = slideleft;
@@ -88,10 +94,18 @@
             //$("#thumbnail_0").click(); as this triggers before images are uploaded it cuase issue. Load it with an interval
         })
 
+        async function getServerImage() {
+            let response = await fetch("http://localhost:3000/requestNewImage?user=1");
+            let blob = await response.blob()
+            console.log(blob)
+            this.readImageFile(blob)
+        }
+
         function readImageFiles(e) {
             var input = e.srcElement || e.target;
             if (input.files && input.files[0]) {
                 for (i = 0; i < input.files.length; i++) {
+                    console.log(input.files[i]);
                     this.readImageFile(input.files[i]);
                 }
             }
@@ -102,6 +116,7 @@
         this.thumbnailWidth = this.opts.thumbnail_width || "80px";
 
         function readImageFile(f) {
+            console.log("reading file", f)
             if (f.type.startsWith("image")) {
                 var reader = new FileReader();
                 reader.onload = e => {
