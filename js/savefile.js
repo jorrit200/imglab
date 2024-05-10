@@ -1,4 +1,6 @@
 function selectFileTypeToSave(){
+    saveAsPascalVOC();
+    return;
     $.dialog({
         title: 'Save/Export as',
         content: `<div style="text-align:center;">

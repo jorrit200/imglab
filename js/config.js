@@ -1,6 +1,7 @@
 var tools = {
     labelling : {
         "tool-point" : {
+            enabled: false,
             type: "point",
             title  : "Point",
             desp : "Create a feature point inside the concave polygon or boundary box",
@@ -16,6 +17,7 @@ var tools = {
             }
         },
         "tool-circle" : {
+            enabled: false,
             type: "circle",
             title  : "Circle",
             desp : "Create a circle",
@@ -32,6 +34,7 @@ var tools = {
             }
         },
         "tool-rectangle" : {
+            enabled: true,
             type: "rect",
             title  : "Rectangle",
             desp : "Create a Boundary boxrectangle",
@@ -48,6 +51,7 @@ var tools = {
             },
         },
         "tool-polygon" : {
+            enabled: false,
             type: "poly",
             title  : "Polygon",
             desp : "Create a concave polygon",
@@ -60,7 +64,7 @@ var tools = {
 
                 poly.on('drawstart', function(e){
                     document.addEventListener('keydown', function(e){
-                        if(e.keyCode == 13){
+                        if(e.keyCode === 13){
                             poly.draw('done');
                             poly.off('drawstart');
 
@@ -95,6 +99,26 @@ var tools = {
             validate: function(el){
                 return true;
             },
+        },
+        "tool-copy-last": {
+            enabled: true,
+            title: "Copy last",
+            desp : "Copy annotations from last image",
+            icon : "rectangle.svg",
+            drawable : false,
+            selectAction : function(){
+                console.log("copy Jonguh")
+                console.log("this image", imgSelected)
+                let imgArray = Object.keys(labellingData)
+                let imgIndex = imgArray.indexOf(imgSelected.name)
+                if (imgIndex < imgArray.length-1) {
+                    let lastImage = labellingData[imgArray[imgIndex-1]]
+                    if (lastImage.shapes) {
+                        console.log("selected image", labellingData[imgSelected.name])
+                        labellingData[imgSelected.name].shapes = JSON.parse(JSON.stringify(lastImage.shapes));
+                    }
+                }
+            }
         }
     },
     canvas : {
@@ -164,7 +188,7 @@ var pluginsStore = {
     }
 }
 
-var suggestedCategories = ["dog", "cat", "car", "vehicle", "truck", "animal", "building", "person"];
+var suggestedCategories = ["person", "vehicle"] // requirement: all lowercase
 var suggestedTags = [];
 var suggestedAttributes = {
     "gender" : ["male", "female", "other"],

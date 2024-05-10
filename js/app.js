@@ -7,7 +7,7 @@ function showSnackBar(msg) {
     setTimeout(function () {
         $("#snackbar").removeClass("show");
         $("#snackbar").text("");
-    }, 3000);
+    }, Math.min(msg.length*120, 3000));
 }
 
 //get mouse cordinates on image

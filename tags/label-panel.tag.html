@@ -97,9 +97,9 @@
             <ul id="fpoints-list">
                 <li class="li-fpoints grey-border" each={fPoint,fid in targetShape.featurePoints}>
                     <div class="input-group small">
-                        <span class={selectedPoint: fPoint.id === this.opts.pointId, input-group-addon: true, drag-handler: fPoint.id !== this.opts.pointId} onclick={updateFPointSelected}></span>
+                        <span class={selectedPoint: fPoint.id === this.opts.pointId, input-group-addon: false, drag-handler: fPoint.id !== this.opts.pointId} onclick={null}></span>
                         <input type="text" class="form-control" value="{ fPoint.label }" onchange={updateFPointLabel} placeholder="Label the feature point">
-                        <div class="input-group-btn" onclick={deleteTag}>
+                        <div class="input-group-btn" onclick={null}>
                             <i class="icon icon-trash-empty"></i>
                         </div>
                     </div>
@@ -169,10 +169,14 @@
             $("#category-select-box").on('keyup', function(e){
                 //Add
                 var val = $(this).val().toLowerCase();
-                if(e.keyCode === 13 && suggestedCategories.indexOf(val) === -1){
-                    $("#category-select-box").editableSelect('add', val, 0);
-                    suggestedCategories.push(val);
-                    tag.targetShape.category = val;
+                if(e.keyCode === 13 && suggestedCategories.indexOf(val) === -1){ // Category input outside of set
+                    // Original behaviour is to add the new category to the set.
+                    // $("#category-select-box").editableSelect('add', val, 0);
+                    // suggestedCategories.push(val);
+                    // tag.targetShape.category = val;
+                    showSnackBar(`Category ${val} doesnt exist. Please select one of the available categories. \n\r` +
+                    `If you think this is a mistake contact Jorrit de Haan (R&D @ Kooi)`)
+                    console.log(val, suggestedCategories, suggestedCategories.indexOf(val))
                 }
             });
 

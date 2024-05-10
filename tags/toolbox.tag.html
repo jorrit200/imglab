@@ -19,7 +19,7 @@
     </style>
 
     <div each={tool,toolid in tools[opts.tools]} id={ toolid } class="tool-button" onclick={ selectme }>
-        <img if={tool.icon} class="tool-icon" src="img/icons/{tool.icon}">
+        <img if={tool.icon} class="tool-icon" src="img/icons/{tool.icon}" width=1px>
         <i if={tool.icon_font} class="tool-icon {tool.icon_font}" />
         <div>{ tool.title }</div>
     </div>
@@ -48,9 +48,9 @@
                     e.stopPropagation()
                 } */
 
-                if (e.key == 'r'  && e.altKey){//rectangle
+                if (e.key === 'r') { //  && e.altKey){//rectangle
                     $("#tool-rectangle").click();
-                    e.preventDefault();
+                    // e.preventDefault(); // prevents typing
                     e.stopPropagation()
                 }
 

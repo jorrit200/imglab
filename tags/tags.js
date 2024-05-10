@@ -312,7 +312,7 @@ riot.tag2('workarea', '<div id="canvas-container"> <img id="img" riot-src="{opts
         });
 
         $(document).keyup(function(e){
-            if(e.keyCode == 46){
+            if(e.keyCode === 46){
                 selectedElements.forEach(el => {
 
                     el.selectize(false, {deepSelect:true})
@@ -327,10 +327,10 @@ riot.tag2('workarea', '<div id="canvas-container"> <img id="img" riot-src="{opts
 
                 selectedElements = [];
 
-            }else if(e.keyCode == 65 && e.shiftKey){
+            }else if(e.keyCode === 65 && e.shiftKey){
 
                 selectAll();
-            }else if(e.keyCode == 65){
+            }else if(e.keyCode === 65){
 
             }
         });
@@ -362,8 +362,8 @@ riot.tag2('workarea', '<div id="canvas-container"> <img id="img" riot-src="{opts
                             currentTool.parent().remove();
                             currentTool.remove();
                         }else{
-                            attachShapeData(currentTool);
-
+                            let newShape = attachShapeData(currentTool);
+                            selectedElements.push(newShape)
                             attachEvents(currentTool)
                         }
                     });
@@ -463,7 +463,7 @@ riot.tag2('workarea', '<div id="canvas-container"> <img id="img" riot-src="{opts
 
     function attachShapeData(shape){
         var points = getPoints(shape);
-        attachShapeToImg(shape.node.id ,shape.type, shape.rbox(myCanvas), points);
+        return attachShapeToImg(shape.node.id ,shape.type, shape.rbox(myCanvas), points);
     }
 
     function updateFeaturePoints(shape){
@@ -510,7 +510,7 @@ riot.tag2('workarea', '<div id="canvas-container"> <img id="img" riot-src="{opts
                 case "rect":
                     var rect = myCanvas.nested()
                         .rect(shape.points[2], shape.points[3])
-                        .move(shape.points[0],shape.points[1])
+                        .move(shape.points[0], shape.points[1])
                         .addClass('labelbox shape')
                         .id(shapeId)
                         .resize();

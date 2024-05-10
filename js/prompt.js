@@ -1,4 +1,4 @@
-$(function () {
+$(function () { return;
   $.confirm({
     title: "",
     content: `
@@ -83,6 +83,8 @@ $(function () {
 });
 
 function displayDonationPrompt() {
+  return;
+ console.log("shit")
   $.dialog({
     title: "Donate",
     content: `<div style="text-align:center;">

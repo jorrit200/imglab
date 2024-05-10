@@ -28,7 +28,7 @@ var pascalVocFormater = {
             var shape = image.shapes[ shape_i ];
             exportData += `
     <object>
-        <name>${shape.label}</name>
+        <name>${shape.category}</name>
         <pose>Unspecified</pose>
         <truncated>0</truncated>
         <difficult>0</difficult>
