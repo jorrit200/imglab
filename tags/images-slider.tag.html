@@ -13,7 +13,7 @@
 
         <label class="btn-bs-file">
             <i class="icon-picture" style="font-size: 1.5em"></i>
-            <input id="img_from_server" type="button" class="filebutton" onclick={ getServerImage }/>
+            <input id="img_from_server" type="button" class="filebutton" onclick={ getServerImage } style="display: none"/>
         </label>
 
         <label class="btn-bs-file">
@@ -96,9 +96,8 @@
 
         async function getServerImage() {
             let response = await fetch("http://localhost:3000/requestNewImage?user=1");
-            let blob = await response.blob()
-            console.log(blob)
-            this.readImageFile(blob)
+            let form = await response.formData()
+            this.readImageFile(form.get("image"), JSON.parse(form.get("boxit")));
         }
 
         function readImageFiles(e) {
@@ -115,14 +114,15 @@
         tag.currentIndex = 0;
         this.thumbnailWidth = this.opts.thumbnail_width || "80px";
 
-        function readImageFile(f) {
+        function readImageFile(f, boxitInfo = null) {
             console.log("reading file", f)
             if (f.type.startsWith("image")) {
                 var reader = new FileReader();
                 reader.onload = e => {
                     var imgData = {
                         name: f.name,
-                        src: e.target.result
+                        src: e.target.result,
+                        boxit: boxitInfo
                     };
                     updateDimentions(e.target.result, imgData);
                     tag.thumbnails.push(imgData);

@@ -36,7 +36,6 @@ riot.tag2('facepp', '<input onchange="{saveKey}" class="form-control" type="text
 
                 formData.append('image_base64', imgdata.substr( imgdata.indexOf(";base64,")+8));
             }
-
             return formData;
         }
 

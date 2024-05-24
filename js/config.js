@@ -107,14 +107,11 @@ var tools = {
             icon : "rectangle.svg",
             drawable : false,
             selectAction : function(){
-                console.log("copy Jonguh")
-                console.log("this image", imgSelected)
                 let imgArray = Object.keys(labellingData)
                 let imgIndex = imgArray.indexOf(imgSelected.name)
-                if (imgIndex < imgArray.length-1) {
+                if (imgIndex > 0) {
                     let lastImage = labellingData[imgArray[imgIndex-1]]
                     if (lastImage.shapes) {
-                        console.log("selected image", labellingData[imgSelected.name])
                         labellingData[imgSelected.name].shapes = JSON.parse(JSON.stringify(lastImage.shapes));
                     }
                 }

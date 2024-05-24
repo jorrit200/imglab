@@ -5,22 +5,22 @@ function selectFileTypeToSave(){
         title: 'Save/Export as',
         content: `<div style="text-align:center;">
                     <div>
-                        <button class="btn btn-primary savebtn"  onclick="javascript:saveAsNimn()" id="saveAsNimn">Project file</button>
+                        <button class="btn btn-primary savebtn"  onclick="saveAsNimn()" id="saveAsNimn">Project file</button>
                     </div>
                     <div>
-                        <button class="btn btn-primary savebtn" onclick="javascript:saveAsDlibXML()" id="saveAsNimn">Dlib XML</button>
+                        <button class="btn btn-primary savebtn" onclick="saveAsDlibXML()" id="saveAsNimn">Dlib XML</button>
                     </div>
                     <div>
-                        <button class="btn btn-primary savebtn" onclick="javascript:saveAsDlibPts()" id="saveAsNimn">Dlib pts</button>
+                        <button class="btn btn-primary savebtn" onclick="saveAsDlibPts()" id="saveAsNimn">Dlib pts</button>
                     </div>
                     <div>
-                        <button class="btn btn-primary savebtn" onclick="javascript:saveAsCOCO()" id="saveAsCOCO">COCO JSON</button>
+                        <button class="btn btn-primary savebtn" onclick="saveAsCOCO()" id="saveAsCOCO">COCO JSON</button>
                     </div>
                     <div>
-                        <button class="btn btn-primary savebtn" onclick="javascript:saveAsPascalVOC()" id="saveAsPascalVOC">Pascal VOC XML</button>
+                        <button class="btn btn-primary savebtn" onclick="saveAsPascalVOC()" id="saveAsPascalVOC">Pascal VOC XML</button>
                     </div>
                     <div>
-                        <button class="btn btn-primary savebtn" onclick="javascript:saveAsYoloV5Pytorch()" id="saveAsYoloV5Pytorch">YOLO V5 Pytorch</button>
+                        <button class="btn btn-primary savebtn" onclick="saveAsYoloV5Pytorch()" id="saveAsYoloV5Pytorch">YOLO V5 Pytorch</button>
                     </div>
                 <div>`,
         escapeKey: true,
@@ -35,7 +35,7 @@ function saveAsNimn(){
     askFileName("Untitled_imglab.nimn", function(fileName){
         analytics_reportExportType("nimn");
         report_UniqueCategories();
-        download( nimn.stringify(nimnSchema, labellingData), fileName, "application/nimn");
+        uploadAnnotation( nimn.stringify(nimnSchema, labellingData), fileName, "application/nimn");
         //download( JSON.stringify(labellingData), fileName, "application/json");
     });
 }
@@ -73,7 +73,7 @@ function saveAsDlibXML(){
     var dlibXMLData = toDlibXML(labellingData);
     askFileName(Object.keys(labellingData).length + "_imglab.xml", function(fileName){
         analytics_reportExportType("dlib_xml");
-        download(dlibXMLData, fileName, "text/xml", "iso-8859-1");
+        uploadAnnotation(dlibXMLData, fileName, "text/xml", "iso-8859-1");
     });
 }
 
@@ -98,7 +98,7 @@ function saveAsDlibPts(){
     ptsData = toDlibPts( shape );
     askFileName(imgSelected.name + "_imglab.pts", function(fileName){
         analytics_reportExportType("dlib_pts", shape.featurePoints.length );
-        download(ptsData, fileName, "text/plain");
+        uploadAnnotation(ptsData, fileName, "text/plain");
     });
 }
 
@@ -110,7 +110,7 @@ function saveAsCOCO(){
     var cocoData = cocoFormater.toCOCO(labellingData);
     askFileName(Object.keys(labellingData).length + "_coco_imglab.json", function(fileName){
         analytics_reportExportType("coco");
-        download(JSON.stringify(cocoData), fileName, "application/json", "utf-8");
+        uploadAnnotation(JSON.stringify(cocoData), fileName, "application/json", "utf-8");
     });
 }
 
@@ -128,9 +128,10 @@ function saveAsPascalVOC(){
         return;
     }else{
         var data = pascalVocFormater.toPascalVOC();
-        askFileName(Object.keys(labellingData[ imgSelected.name ].shapes.length ).length + "_pvoc_imglab.xml", function(fileName){
+        console.log(imgSelected)
+        askFileName(imgSelected.name.split('.')[0] + ".xml", function(fileName){
             analytics_reportExportType("pascal_voc");
-            download(data, fileName, "text/xml", "utf-8");
+            uploadAnnotation(data, fileName, "text/xml", "utf-8", imgSelected.boxit);
         });
     }
 
@@ -306,19 +307,22 @@ function yoloDataRendering() {
 
 /**
  * Save given data to a file
- * @param {*} data 
- * @param {string} filename 
+ * @param {*} data
+ * @param {string} filename
  * @param {string} type : Mime type
+ * @param encoding
+ * @param boxit
  */
-function download(data, filename, type, encoding) {
+function uploadAnnotation(data, filename, type, encoding, boxit = {}) {
     encoding || (encoding = "utf-8")
-    var blobData = new Blob([data], {type: type + ";charset="+encoding})
+    let blobData = new Blob([data], {type: type + ";charset="+encoding})
     let formData = new FormData();
-    formData.append('file', blobData)
-    fetch("https://localhost:3000/uploadAnnotation", {
-        method: 'PUT',
+    formData.append('annotation', blobData)
+    formData.append('boxit', JSON.stringify(boxit))
+    fetch("http://localhost:3000/uploadAnnotation", {
+        method: 'POST',
         body: formData,
-    })
+    }).then((res) => {console.log(res)})
     // saveAs(blobData, filename);
 }
 
@@ -334,7 +338,7 @@ function askFileName(suggestedName, cb){
         content: `<input class="form-control"  type"text" id="fileName" value="${suggestedName}" >`,
         buttons: {
             confirm: {
-                text: 'Save',
+                text: 'Submit',
                 btnClass: 'btn-blue',
                 action: function () {
                     var fname = this.$content.find('#fileName').val();
