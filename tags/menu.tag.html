@@ -15,7 +15,7 @@
     <div class="dropdown" >
         <div class="dropbtn"><i class="icon-menu" ></i></div>
         <div class="dropdown-content">
-            <a href="#" >
+            <a href="#" style="display:none;" >
                 <label class="btn-bs-file">Open
                     <input id="browse" type="file" class="filebutton" accept=".fpp,.nimn,.xml,.json" onchange={openFile}  />
                 </label>
@@ -30,7 +30,7 @@
     </div>
     <script>
         this.openFile = function(e){
-            readDataFile(e);
+            // readDataFile(e);
             //openDataFile()
         }
 
@@ -46,11 +46,11 @@
         this.on('mount', function(){
 
             document.addEventListener('keydown', e => {//import
-                if ( (e.key == 'I' || e.key == 'i') && !e.shiftKey && !e.altKey && e.ctrlKey ){
-                    document.getElementById('browse').click();
-                    e.preventDefault();
-                    e.stopPropagation();
-                }
+                // if ( (e.key == 'I' || e.key == 'i') && !e.shiftKey && !e.altKey && e.ctrlKey ){
+                //     document.getElementById('browse').click();
+                //     e.preventDefault();
+                //     e.stopPropagation();
+                // }
                 if ( (e.key == 'E' || e.key == 'e') && !e.shiftKey && !e.altKey && e.ctrlKey ){//export
                     document.getElementById('save').click();
                     e.preventDefault();

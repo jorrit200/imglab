@@ -16,7 +16,7 @@
             <input id="img_from_server" type="button" class="filebutton" onclick={ getServerImage } style="display: none"/>
         </label>
 
-        <label class="btn-bs-file">
+        <label class="btn-bs-file" style="display:none;">
             <i class="icon-folder-open-empty" style="font-size: 1.5em"></i>
             <input type="file" id="image_folder" webkitdirectory mozdirectory msdirectory odirectory directory
                 onchange={ readImageFiles }>
@@ -77,12 +77,12 @@
                     e.stopPropagation();
                 }
 
-                if (e.key == 'o' && e.altKey && e.ctrlKey) {
-                    document.getElementById('image_folder').click();
-                    e.preventDefault();
-                    e.stopPropagation();
-                }
-                if (e.key == 'o' && e.altKey) {
+                // if (e.key == 'o' && e.altKey && e.ctrlKey) {
+                //     document.getElementById('image_folder').click();
+                //     e.preventDefault();
+                //     e.stopPropagation();
+                // }
+                if (e.key == 'o' && e.ctrlKey) {
                     document.getElementById('browseImages').click();
                     e.preventDefault();
                     e.stopPropagation();

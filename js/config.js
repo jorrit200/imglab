@@ -102,9 +102,26 @@ var tools = {
         },
         "tool-copy-last": {
             enabled: true,
-            title: "Copy last",
+            title: "Copy",
             desp : "Copy annotations from last image",
-            icon : "rectangle.svg",
+            icon : "copy.svg",
+            drawable : false,
+            selectAction : function(){
+                let imgArray = Object.keys(labellingData)
+                let imgIndex = imgArray.indexOf(imgSelected.name)
+                if (imgIndex > 0) {
+                    let lastImage = labellingData[imgArray[imgIndex-1]]
+                    if (lastImage.shapes) {
+                        labellingData[imgSelected.name].shapes = JSON.parse(JSON.stringify(lastImage.shapes));
+                    }
+                }
+            }
+        },
+        "tool-paste": {
+            enabled: true,
+            title: "Paste",
+            desp : "Paste annotation of another image to this image",
+            icon : "paste.svg",
             drawable : false,
             selectAction : function(){
                 let imgArray = Object.keys(labellingData)
@@ -120,18 +137,21 @@ var tools = {
     },
     canvas : {
         "tool-move" : {
+            enabled: true,
             title  : "Move",
             desp : "Move an element or the entire workarea",
             icon : "move.svg",
             type : "move",
         },
         "tool-zoom" : {
+            enabled: true,
             title  : "Zoom",
             desp : "Enlarge the workarea",
             icon_font : "icon-zoom-in",
             actions : ["zoom"]
         },
         "tool-light" : {
+            enabled: false,
             title  : "Light",
             desp : "Highlight the labels",
             icon_font : "icon-lightbulb",

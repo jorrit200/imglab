@@ -18,7 +18,7 @@
         }
     </style>
 
-    <div each={tool,toolid in tools[opts.tools]} id={ toolid } class="tool-button" onclick={ selectme }>
+    <div each={tool,toolid in tools[opts.tools]} if={tool.enabled} id={ toolid } class="tool-button" onclick={ selectme }>
         <img if={tool.icon} class="tool-icon" src="img/icons/{tool.icon}" width=1px>
         <i if={tool.icon_font} class="tool-icon {tool.icon_font}" />
         <div>{ tool.title }</div>
@@ -30,17 +30,17 @@
         this.on('mount', function(){
             document.addEventListener('keydown', e => {
                     
-                if (e.key == 'f'  && e.altKey){//featurepoint
-                    $("#tool-point").click();
-                    e.preventDefault();
-                    e.stopPropagation()
-                }
-
-                if (e.key == 'c'  && e.altKey){//circle
-                    $("#tool-circle").click();
-                    e.preventDefault();
-                    e.stopPropagation()
-                }
+                // if (e.key == 'f'  && e.altKey){//featurepoint
+                //     $("#tool-point").click();
+                //     e.preventDefault();
+                //     e.stopPropagation()
+                // }
+                //
+                // if (e.key == 'c'  && e.altKey){//circle
+                //     $("#tool-circle").click();
+                //     e.preventDefault();
+                //     e.stopPropagation()
+                // }
 
                 /* if (e.key == 'e'  && e.altKey){//ellipse
                     $("#tool-ellipse").click();
@@ -54,11 +54,11 @@
                     e.stopPropagation()
                 }
 
-                if (e.key == 'p'  && e.altKey){//Polygon
-                    $("#tool-polygon").click();
-                    e.preventDefault();
-                    e.stopPropagation()
-                }
+                // if (e.key == 'p'  && e.altKey){//Polygon
+                //     $("#tool-polygon").click();
+                //     e.preventDefault();
+                //     e.stopPropagation()
+                // }
 
                 /* if (e.key == 'w'  && e.altKey){//Magic wand
                     $("#tool-polygon").click();
@@ -66,17 +66,17 @@
                     e.stopPropagation()
                 } */
 
-                if (e.key == 'm'  && e.altKey){//Magic wand
-                    $("#tool-move").click();
-                    e.preventDefault();
-                    e.stopPropagation()
-                }
-
-                if (e.key == 'l'  && e.altKey){//Magic wand
-                    $("#tool-light").click();
-                    e.preventDefault();
-                    e.stopPropagation()
-                }
+                // if (e.key == 'm'  && e.altKey){//Magic wand
+                //     $("#tool-move").click();
+                //     e.preventDefault();
+                //     e.stopPropagation()
+                // }
+                //
+                // if (e.key == 'l'  && e.altKey){//Magic wand
+                //     $("#tool-light").click();
+                //     e.preventDefault();
+                //     e.stopPropagation()
+                // }
 
             });
         });
