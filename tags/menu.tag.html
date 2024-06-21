@@ -35,8 +35,21 @@
         }
 
         this.saveFile = function(){
+            if(!imgSelected){
+                showSnackBar("This option is applicable on the image loaded in workarea.");
+                return;
+            }else if(labellingData[ imgSelected.name ].shapes.length === 0){
+                showSnackBar("You need to label the currently loaded image.");
+                return;
+            }
+            let uncategorizedShapes = labellingData[ imgSelected.name ].shapes
+                .filter(s => s.category === "unlabelled" | s.category === undefined | s.category === null)
+            if(uncategorizedShapes.length > 0) {
+                showSnackBar("You did not categorize al boxes")
+            }
             selectFileTypeToSave();
         }
+
 
         this.openSettings = function(){
             displaySettingsModal();

@@ -55,8 +55,8 @@ function report_UniqueCategories(){
             var reportData = labelData.split(/\|(.+)/);
 
             gtag('event', 'label', {
-                'event_category': reportData[0], //Human
-                'event_label': reportData[1], //Face
+                'event_category': reportData[0],
+                'event_label': reportData[1],
                 'value' : 1
             });
         });
@@ -119,21 +119,10 @@ function saveAsCOCO(){
  * It captures only boundary box detail of currently loaded/selected image.
  */
 function saveAsPascalVOC(){
+    let data = pascalVocFormater.toPascalVOC();
+    analytics_reportExportType("pascal_voc");
+    uploadAnnotation(data, imgSelected.name.split('.')[0] + ".xml", "text/xml", "utf-8", imgSelected.boxit);
 
-    if(!imgSelected){
-        showSnackBar("This option is applicable on the image loaded in workarea.");
-        return;
-    }else if(labellingData[ imgSelected.name ].shapes.length === 0){
-        showSnackBar("You need to label the currently loaded image.");
-        return;
-    }else{
-        var data = pascalVocFormater.toPascalVOC();
-        console.log(imgSelected)
-        askFileName(imgSelected.name.split('.')[0] + ".xml", function(fileName){
-            analytics_reportExportType("pascal_voc");
-            uploadAnnotation(data, fileName, "text/xml", "utf-8", imgSelected.boxit);
-        });
-    }
 
 }
 
